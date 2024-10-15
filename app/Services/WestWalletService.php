@@ -39,6 +39,11 @@ class WestWalletService
             Log::info($ipn_url);
             Log::info($currency);
             Log::info($user_id);
+            $data = array();
+            $data['currency'] = $currency;
+            $data['ipn_url'] = $ipn_url;
+            $data['label'] = $user_id;
+            Log::info($data);
             $address = $this->client->generateAddress($currency, $ipn_url, $user_id);
             Log::info($address);
             return $address['address'];
@@ -55,10 +60,29 @@ class WestWalletService
     {
 
         $currencies = [
-            'BTC', 'ETH', 'USDT','TRX', 'USDTTRC', 
-            'TON', 'USDTTON', 'BNB20', 'USDTBEP', 'XRP', 'SOL', 
-            'LTC', 'DOGE', 'XMR', 'ADA', 'DASH', 'BCH', 'ZEC', 'NOT', 
-            'ETC', 'EOS', 'XLM', 'SHIB'
+            'BTC',
+            'ETH',
+            'USDT',
+            'TRX',
+            'USDTTRC',
+            'TON',
+            'USDTTON',
+            'BNB20',
+            'USDTBEP',
+            'XRP',
+            'SOL',
+            'LTC',
+            'DOGE',
+            'XMR',
+            'ADA',
+            'DASH',
+            'BCH',
+            'ZEC',
+            'NOT',
+            'ETC',
+            'EOS',
+            'XLM',
+            'SHIB'
         ];
 
         $addresses = [];
@@ -74,5 +98,4 @@ class WestWalletService
     {
         return $this->client->transactionInfo($transaction_id)['status'] == 'completed';
     }
-
 }
