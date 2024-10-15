@@ -33,3 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::post('/westwallet/ipn', [UserBalanceController::class, 'ipn'])->name('westwallet.ipn');
+
+
+Route::post('/westwallet/create-address', [UserController::class, 'createAddress']);
+Route::post('/westwallet/create-addresses', [UserController::class, 'createAddresses']);

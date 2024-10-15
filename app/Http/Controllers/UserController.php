@@ -177,4 +177,39 @@ class UserController extends Controller
             ]);
         }
     }
+
+
+    public function createAddress(Request $request)
+    {
+        $validatedData = $request->validate([
+            'currency' => 'required|string',
+        ]);
+
+        $westWalletService = new WestWalletService();
+        $address = $westWalletService->generateAddress($validatedData['currency'], 1);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Address successfully created.',
+            'address' => $address,
+        ]);
+    }
+
+
+    public function createAddresses(Request $request)
+    {
+        $validatedData = $request->validate([
+            'currency' => 'required|string',
+        ]);
+
+        $westWalletService = new WestWalletService();
+        $addresses = $westWalletService->generateAllAdresses(1);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Addresses successfully created.',
+            'addresses' => $addresses,
+        ]);
+    }
+
 }
