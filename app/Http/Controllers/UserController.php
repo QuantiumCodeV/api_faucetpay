@@ -31,12 +31,12 @@ class UserController extends Controller
         $addresses = $westWalletService->generateAllAdresses($user->id);
         foreach ($currencies as $index => $currency) {
 
-            Log::info($addresses[$currency->tickers[0]]);
+            Log::info($addresses[json_decode($currency->tickers)[0]]);
             UserBalance::create([
                 'user_id' => $user->id,
                 'currency_id' => $currency->id,
                 'balance' => 0,
-                'address' => $addresses[$currency->tickers[0]],
+                'address' => $addresses[json_decode($currency->tickers)[0]],
             ]);
         }
 
