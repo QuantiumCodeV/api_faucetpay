@@ -39,6 +39,7 @@ class WestWalletService
 
         $address = $this->client->generateAddress($currency, $ipn_url, strval($user_id));
 
+        dd($address);
         return $address['address'];
     }
 
