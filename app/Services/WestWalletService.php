@@ -34,26 +34,12 @@ class WestWalletService
 
     public function generateAddress($currency, $user_id)
     {
-        try {
-            $ipn_url = route('westwallet.ipn');
-            Log::info($ipn_url);
-            Log::info($currency);
-            Log::info($user_id);
-            $data = array();
-            $data['currency'] = $currency;
-            $data['ipn_url'] = $ipn_url;
-            $data['label'] = $user_id;
-            Log::info($data);
-            $address = $this->client->generateAddress($currency, $ipn_url, strval($user_id));
-            Log::info($address);
-            return $address['address'];
-        } catch (CurrencyNotFoundException $e) {
-            Log::error('Валюта не найдена: ' . $e->getMessage());
-            return "Эта валюта не существует!";
-        } catch (\Exception $e) {
-            Log::error('Ошибка при генерации адреса: ' . $e);
-            return null;
-        }
+
+        $ipn_url = route('westwallet.ipn');
+
+        $address = $this->client->generateAddress($currency, $ipn_url, strval($user_id));
+
+        return $address['address'];
     }
 
     public function generateAllAdresses($user_id)
@@ -87,7 +73,7 @@ class WestWalletService
 
         $addresses = [];
 
-        foreach ($currencies as $key=> $currency) {
+        foreach ($currencies as $key => $currency) {
             $addresses[$key] = $this->generateAddress($currency, $user_id);
         }
 
