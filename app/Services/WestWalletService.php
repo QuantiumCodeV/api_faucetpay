@@ -44,7 +44,7 @@ class WestWalletService
             $data['ipn_url'] = $ipn_url;
             $data['label'] = strval($user_id);
             Log::info($data);
-            $address = $this->client->generateAddress($currency, $ipn_url, strval($user_id));
+            $address = $this->client->generateAddress($currency, strval($ipn_url), strval($user_id));
             Log::info($address);
             return $address['address'];
         } catch (CurrencyNotFoundException $e) {
