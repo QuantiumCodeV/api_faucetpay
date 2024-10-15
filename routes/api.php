@@ -21,6 +21,9 @@ Route::group(['prefix' => 'account'], function () {
     Route::middleware('auth:sanctum')->post('/change-password', [UserController::class, 'changePassword']);
 });
 
+Route::get('/test', function () {
+    return response()->json(['message' => 'Hello, World!']);
+});
 
 //Группа маршрутов, требующих аутентификации
 Route::middleware('auth:sanctum')->group(function () {
