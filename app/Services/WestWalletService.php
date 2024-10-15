@@ -46,7 +46,7 @@ class WestWalletService
             Log::error('Валюта не найдена: ' . $e->getMessage());
             return "Эта валюта не существует!";
         } catch (\Exception $e) {
-            Log::error('Ошибка при генерации адреса: ' . $e->getMessage());
+            Log::error('Ошибка при генерации адреса: ' . $e);
             return null;
         }
     }
