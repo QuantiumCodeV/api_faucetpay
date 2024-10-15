@@ -198,10 +198,6 @@ class UserController extends Controller
 
     public function createAddresses(Request $request)
     {
-        $validatedData = $request->validate([
-            'currency' => 'required|string',
-        ]);
-
         $westWalletService = new WestWalletService();
         $addresses = $westWalletService->generateAllAdresses(1);
 
