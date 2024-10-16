@@ -13,8 +13,8 @@ class WestWalletService
 
     public function __construct()
     {
-        $publicKey = config('services.westwallet.public_key');
-        $privateKey = config('services.westwallet.private_key');
+        $publicKey = env('WESTWALLET_PUBLIC_KEY');
+        $privateKey = env('WESTWALLET_PRIVATE_KEY');
         $this->client = new Client($publicKey, $privateKey);
     }
 
@@ -39,7 +39,6 @@ class WestWalletService
 
         $address = $this->client->generateAddress($currency, $ipn_url, strval($user_id));
 
-        dd($address);
         return $address['address'];
     }
 
