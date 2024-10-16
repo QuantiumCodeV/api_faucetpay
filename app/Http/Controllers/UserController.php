@@ -9,6 +9,9 @@ use App\Models\UserBalance;
 use Illuminate\Support\Facades\Hash;
 use App\Services\WestWalletService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
+use App\Jobs\GenerateUserWallets;
+
 class UserController extends Controller
 {
     public function create(Request $request)
@@ -26,30 +29,19 @@ class UserController extends Controller
             'email_verified_at' => now(),
         ]);
 
-        $westWalletService = new WestWalletService();
-        $currencies = Currency::all();
-        $addresses = $westWalletService->generateAllAdresses($user->id);
-        foreach ($currencies as $index => $currency) {
-
-            Log::info($addresses[json_decode($currency->tickers)[0]]);
-            UserBalance::create([
-                'user_id' => $user->id,
-                'currency_id' => $currency->id,
-                'balance' => 0,
-                'address' => $addresses[json_decode($currency->tickers)[0]],
-            ]);
-        }
-
         if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create user.',
+                'message' => 'Не удалось создать пользователя.',
             ], 200);
         }
 
+        // Запускаем задачу на генерацию кошельков асинхронно
+        Queue::push(new GenerateUserWallets($user->id));
+
         return response()->json([
             'success' => true,
-            'message' => 'Your account has been created. Please check your email to activate your account.',
+            'message' => 'Ваш аккаунт создан. Пожалуйста, проверьте вашу электронную почту для активации аккаунта.',
         ], 200);
     }
 
