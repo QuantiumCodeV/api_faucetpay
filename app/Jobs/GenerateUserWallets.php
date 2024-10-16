@@ -33,12 +33,15 @@ class GenerateUserWallets implements ShouldQueue
 
         foreach ($currencies as $currency) {
             Log::info($addresses[json_decode($currency->tickers)[0]]);
+            Log::info("===================");
             UserBalance::create([
                 'user_id' => $user->id,
                 'currency_id' => $currency->id,
                 'balance' => 0,
                 'address' => $addresses[json_decode($currency->tickers)[0]],
             ]);
+            Log::info($addresses[json_decode($currency->tickers)[0]]);
+            Log::info("===================");
         }
     }
 }
