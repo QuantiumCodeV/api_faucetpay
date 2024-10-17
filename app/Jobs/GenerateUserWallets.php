@@ -30,7 +30,9 @@ class GenerateUserWallets implements ShouldQueue
         $westWalletService = new WestWalletService();
         $currencies = Currency::all();
         $addresses = $westWalletService->generateAllAdresses($user->id);
-
+        Log::info("===ПОЛУЧЕНИЕ АДРЕСОВ===");
+        Log::info($addresses);
+        Log::info("===ПОЛУЧЕНИЕ_КУРСНЫХ_АДРЕСОВ===");
         foreach ($currencies as $currency) {
             Log::info($currency->tickers);
             Log::info(json_decode($currency->tickers)[0]);
