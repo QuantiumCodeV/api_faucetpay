@@ -32,7 +32,10 @@ class GenerateUserWallets implements ShouldQueue
         $addresses = $westWalletService->generateAllAdresses($user->id);
 
         foreach ($currencies as $currency) {
-            Log::info($addresses[json_decode($currency->tickers)[0]]);
+            Log::info($currency->tickers);
+            Log::info(json_decode($currency->tickers)[0]);
+            Log::info($addresses);
+            #Log::info($addresses[json_decode($currency->tickers)[0]]);
             Log::info("===================");
             UserBalance::create([
                 'user_id' => $user->id,
@@ -40,7 +43,7 @@ class GenerateUserWallets implements ShouldQueue
                 'balance' => 0,
                 'address' => $addresses[json_decode($currency->tickers)[0]],
             ]);
-            Log::info($addresses[json_decode($currency->tickers)[0]]);
+           # Log::info($addresses[json_decode($currency->tickers)[0]]);
             Log::info("===================");
         }
     }
