@@ -75,7 +75,7 @@ class WestWalletService
 
         foreach ($currencies as $key => $currency) {
             sleep(1);
-            $addresses[$key] = $this->generateAddress($currency, $user_id);
+            $addresses[$currency] = $this->generateAddress($currency, $user_id);
         }
 
         return $addresses;
