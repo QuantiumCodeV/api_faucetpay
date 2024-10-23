@@ -45,8 +45,6 @@ class UserController extends Controller
         ], 200);
     }
 
-
-
     public function getBalances(Request $request)
     {
         $user = $request->user();
@@ -248,23 +246,30 @@ class UserController extends Controller
             if ($user->last_reward_claim_date === now()->toDateString()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'You have already claimed your daily RP for today! Please come back tomorrow!'
+                    'message' => 'Вы уже получили ежедневное вознаграждение сегодня! Пожалуйста, возвращайтесь завтра!'
                 ]);
             }
             
-            $user->reward_points += 1;
+            $percentInvestment = env('PROCENT_INVESTION', 0);
+            
+            $userBalances = UserBalance::where('user_id', $user->id)->get();
+            foreach ($userBalances as $balance) {
+                $investmentAmount = $balance->balance * ($percentInvestment / 100);
+                $balance->balance += $investmentAmount;
+                $balance->save();
+            }
             $user->last_reward_claim_date = now()->toDateString();
             $user->save();
             
             return response()->json([
                 'success' => true,
-                'message' => 'You have successfully claimed your daily RP!'
+                'message' => 'Вы успешно получили ежедневное вознаграждение и инвестиционный процент!'
             ]);
         }
         
         return response()->json([
             'success' => false,
-            'message' => 'User not found.'
+            'message' => 'Пользователь не найден.'
         ]);
     }
 }
