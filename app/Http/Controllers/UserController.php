@@ -210,8 +210,8 @@ class UserController extends Controller
             $balance = $userBalances->where('currency_id', $currency->id)->first();
             $coinBalances[] = [
                 'name' => $currency->name,
-                'coin' => $currency->symbol,
-                'image' => $currency->image_url,
+                'coin' => json_decode($currency->tickers, true)[0],
+                'image' => "https://cdn.faucetpay.io/coins/" . strtolower(json_decode($currency->tickers, true)[0]) . ".png",
                 'price' => $currency->price,
                 'balance' => $balance ? $balance->balance : '0.00000000'
             ];
