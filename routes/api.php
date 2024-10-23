@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserBalanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
-
+use App\Http\Controllers\CurrencyController;
 // Маршрут для регистрации аккаунта
 
 
@@ -24,6 +24,8 @@ Route::group(['prefix' => 'account'], function () {
 Route::get('/test', function () {
     return response()->json(['message' => 'Hello, World!']);
 });
+
+Route::get('/coins/get-all', [CurrencyController::class, 'getCurrencies']);
 
 //Группа маршрутов, требующих аутентификации
 Route::middleware('auth:sanctum')->group(function () {

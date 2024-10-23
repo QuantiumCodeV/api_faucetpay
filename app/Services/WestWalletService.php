@@ -10,12 +10,14 @@ use WestWallet\WestWallet\CurrencyNotFoundException;
 class WestWalletService
 {
     protected $client;
+    protected $apiKey;
+    protected $secretKey;
 
     public function __construct()
     {
-        $publicKey = env('WESTWALLET_PUBLIC_KEY');
-        $privateKey = env('WESTWALLET_PRIVATE_KEY');
-        $this->client = new Client($publicKey, $privateKey);
+        $this->apiKey = env('WESTWALLET_PUBLIC_KEY');
+        $this->secretKey = env('WESTWALLET_PRIVATE_KEY');
+        $this->client = new Client($this->apiKey, $this->secretKey);
     }
 
     public function createWithdrawal($currency, $amount, $address)
@@ -31,6 +33,46 @@ class WestWalletService
             return null;
         }
     }
+
+    public function getCurrenciesData() {
+        $data = [];
+        $timestamp = time();
+        if (empty($data)) {
+            $body = "";
+        } else {
+            $body = json_encode($data);
+        }
+        $requestData = json_encode($data, JSON_UNESCAPED_SLASHES);
+        
+        $request = curl_init("https://api.westwallet.io/wallet/currencies_data");
+        
+        if ($requestData != "[]") {
+        	$hmacMessage = $timestamp.$requestData;
+        } else {
+        	$hmacMessage = $timestamp;
+        }
+
+        $signature = hash_hmac("sha256", $hmacMessage, $this->secretKey);
+        curl_setopt($request, CURLOPT_FAILONERROR, TRUE);
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($request, CURLOPT_SSL_VERIFYPEER, 0);
+        $headers = array(
+            'X-API-KEY: '.$this->apiKey,
+            'Content-Type: application/json',
+            'X-ACCESS-SIGN: '.$signature,
+            'X-ACCESS-TIMESTAMP: '.$timestamp
+        );
+        curl_setopt($request, CURLOPT_HTTPHEADER, $headers);
+        
+        $response = curl_exec($request);
+        $responseJson = json_decode($response, TRUE);
+        //$this->checkErrors($request, $responseJson);
+        curl_close($request);
+        if ($responseJson !== FALSE) {
+            return $responseJson;
+        }
+    }
+
 
     public function generateAddress($currency, $user_id)
     {
