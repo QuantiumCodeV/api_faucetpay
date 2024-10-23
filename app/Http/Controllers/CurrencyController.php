@@ -31,6 +31,8 @@ class CurrencyController extends Controller
             $prices[strtoupper($symbol)] = $priceInfo['usd'];
         }
 
+        return response()->json($prices);
+
         $coins = [];
         foreach ($westWalletData as $currency) {
             $coinId = strtolower($currency['name']);
