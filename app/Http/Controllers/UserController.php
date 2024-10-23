@@ -226,7 +226,7 @@ class UserController extends Controller
         // $user->payments() - это отношение, которое возвращает все платежи пользователя.
         // whereDate('created_at', today()) - фильтрует платежи, оставляя только те, которые были созданы сегодня.
         // get() - выполняет запрос и возвращает коллекцию результатов.
-        $todayPayments = $user->payments()->whereDate('created_at', today())->get();
+        //$todayPayments = $user->payments()->whereDate('created_at', today())->get();
         
         return response()->json([
             'success' => true,
@@ -236,8 +236,8 @@ class UserController extends Controller
                 'reward_points' => $user->reward_points,
                 'statistics' => [
                     'portfolio_value' => number_format($portfolioValue, 8, '.', ''),
-                    'today_usd_payments_received' => number_format($todayPayments->sum('amount'), 8, '.', ''),
-                    'today_payments_received' => $todayPayments->count()
+                    'today_usd_payments_received' => number_format(0, 8, '.', ''),
+                    'today_payments_received' => 0
                 ]
             ]
         ]);
