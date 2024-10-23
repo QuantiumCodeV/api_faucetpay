@@ -222,6 +222,10 @@ class UserController extends Controller
             return $balance->balance * $currency->price;
         });
         
+        // Эта строка кода получает все платежи пользователя за сегодняшний день.
+        // $user->payments() - это отношение, которое возвращает все платежи пользователя.
+        // whereDate('created_at', today()) - фильтрует платежи, оставляя только те, которые были созданы сегодня.
+        // get() - выполняет запрос и возвращает коллекцию результатов.
         $todayPayments = $user->payments()->whereDate('created_at', today())->get();
         
         return response()->json([

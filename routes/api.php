@@ -7,6 +7,7 @@ use App\Http\Controllers\UserBalanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\TransactionsController;
 // Маршрут для регистрации аккаунта
 
 
@@ -41,3 +42,5 @@ Route::middleware('auth:sanctum')->get('/wallet/get-information', [UserControlle
 
 Route::post('/westwallet/create-address', [UserController::class, 'createAddress']);
 Route::post('/westwallet/create-addresses', [UserController::class, 'createAddresses']);
+
+Route::middleware('auth:sanctum')->get('/wallet/get-transactions', [TransactionsController::class, 'getAll']);
