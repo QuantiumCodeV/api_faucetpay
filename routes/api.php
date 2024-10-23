@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/westwallet/ipn', [UserBalanceController::class, 'ipn'])->name('westwallet.ipn');
 
+Route::middleware('auth:sanctum')->post('/rp/claim-daily-rp', [UserController::class, 'claimDailyRewardPoints']);
+Route::middleware('auth:sanctum')->get('/wallet/get-information', [UserController::class, 'getInformation']);
 
 Route::post('/westwallet/create-address', [UserController::class, 'createAddress']);
 Route::post('/westwallet/create-addresses', [UserController::class, 'createAddresses']);

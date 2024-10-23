@@ -200,4 +200,71 @@ class UserController extends Controller
         ]);
     }
 
+
+    public function getInformation(Request $request)
+    {
+        $user = $request->user();
+        $currencies = Currency::all();
+        $userBalances = UserBalance::where('user_id', $user->id)->get();
+        
+        $coinBalances = [];
+        foreach ($currencies as $currency) {
+            $balance = $userBalances->where('currency_id', $currency->id)->first();
+            $coinBalances[] = [
+                'name' => $currency->name,
+                'coin' => $currency->symbol,
+                'image' => $currency->image_url,
+                'price' => $currency->price,
+                'balance' => $balance ? $balance->balance : '0.00000000'
+            ];
+        }
+        
+        $portfolioValue = $userBalances->sum(function ($balance) use ($currencies) {
+            $currency = $currencies->where('id', $balance->currency_id)->first();
+            return $balance->balance * $currency->price;
+        });
+        
+        $todayPayments = $user->payments()->whereDate('created_at', today())->get();
+        
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'data' => [
+                'coin_balances' => $coinBalances,
+                'reward_points' => $user->reward_points,
+                'statistics' => [
+                    'portfolio_value' => number_format($portfolioValue, 8, '.', ''),
+                    'today_usd_payments_received' => number_format($todayPayments->sum('amount'), 8, '.', ''),
+                    'today_payments_received' => $todayPayments->count()
+                ]
+            ]
+        ]);
+    }
+
+    public function claimDailyRewardPoints(Request $request)
+    {
+        $user = $request->user();
+        if ($user) {
+            if ($user->last_reward_claim_date === now()->toDateString()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You have already claimed your daily RP for today! Please come back tomorrow!'
+                ]);
+            }
+            
+            $user->reward_points += 1;
+            $user->last_reward_claim_date = now()->toDateString();
+            $user->save();
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'You have successfully claimed your daily RP!'
+            ]);
+        }
+        
+        return response()->json([
+            'success' => false,
+            'message' => 'User not found.'
+        ]);
+    }
 }
