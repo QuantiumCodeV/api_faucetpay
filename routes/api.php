@@ -43,4 +43,4 @@ Route::middleware('auth:sanctum')->get('/wallet/get-information', [UserControlle
 Route::post('/westwallet/create-address', [UserController::class, 'createAddress']);
 Route::post('/westwallet/create-addresses', [UserController::class, 'createAddresses']);
 
-Route::middleware('auth:sanctum')->get('/wallet/get-transactions', [TransactionsController::class, 'getAll']);
+Route::middleware('auth:sanctum')->post('/wallet/get-transactions', [TransactionsController::class, 'getAll']);
