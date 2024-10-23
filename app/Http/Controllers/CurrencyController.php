@@ -12,26 +12,7 @@ class CurrencyController extends Controller
         $westWalletService = new WestWalletService();
         $westWalletData = $westWalletService->getCurrenciesData();
 
-        // Получаем цены криптовалют с CoinGecko API (бесплатный источник без API ключа)
-        $client = new \GuzzleHttp\Client();
-        $symbols = implode(',', array_column($westWalletData, 'symbol'));
-        $response = $client->get("https://api.coingecko.com/api/v3/simple/price", [
-            'query' => [
-                'ids' => $symbols,
-                'vs_currencies' => 'usd'
-            ],
-            'headers' => [
-                'accept' => 'application/json',
-                'x-cg-pro-api-key' => 'CG-YQu9aKRtzgPUeYDbChwkzRh2',
-            ],
-        ]);
-        $data = json_decode($response->getBody(), true);
-        $prices = [];
-        foreach ($data as $symbol => $priceInfo) {
-            $prices[strtoupper($symbol)] = $priceInfo['usd'];
-        }
-
-        return response($data);
+        
 
         $coins = [];
         foreach ($westWalletData as $currency) {
