@@ -16,7 +16,7 @@ class CurrencyController extends Controller
         $client = new \GuzzleHttp\Client();
         $response = $client->get('https://api.coingecko.com/api/v3/simple/price', [
             'query' => [
-                'ids' => implode(',', array_column($westWalletData, 'name')),
+                'ids' => implode(',', array_column($westWalletData, 'symbol')),
                 'vs_currencies' => 'usd'
             ]
         ]);
