@@ -20,12 +20,32 @@ class WithdrawController extends Controller
     public function estimateWithdrawalCharges(Request $request)
     {
         $currency = Currency::where('tickers', 'like', '%' . $request->coin . '%')->first();
-        return response()->json($currency);
         if (!$currency) {
             return response()->json(['success' => false, 'message' => 'Currency not found', 'data' => []]);
         }
         $fee = $currency->min_withdraw * 0.0001;
-        $receive_amount = $request->amount - $fee;
+        if ($request->type == 'PRIORITY') {
+            $fee = $currency->min_withdraw * 0.0005;
+        }
+        if ($request->amount == 0) {
+            $receive_amount = 0;
+        } else {
+            $receive_amount = $request->amount - $fee;
+        }
+
+        if ($receive_amount < $currency->min_withdraw) {
+            return response()->json(['success' => false, 'message' => 'Amount is too low', 'data' => []]);
+        }
+        if ($receive_amount > $currency->max_withdraw_per_transaction) {
+            return response()->json(['success' => false, 'message' => 'Amount is too high', 'data' => []]);
+        }
+        if ($request->type == 'PRIORITY' && $currency->max_withdraw_transactions_per_day <= 0) {
+            return response()->json(['success' => false, 'message' => 'Priority withdrawals are not allowed', 'data' => []]);
+        }
+        if ($request->type == 'PRIORITY' && $currency->max_withdraw_transactions_per_day > 0 && $currency->max_withdraw_transactions_per_day <= $currency->max_withdraw_transactions_per_day) {
+            return response()->json(['success' => false, 'message' => 'Max withdrawals per day reached', 'data' => []]);
+        }
+
         return response()->json(['success' => true, 'message' => '', 'data' => ['fee' => $fee, 'minimum' => $currency->min_withdraw, 'receive_amount' => $receive_amount]]);
     }
 }
