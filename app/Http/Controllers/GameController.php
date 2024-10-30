@@ -16,6 +16,13 @@ class GameController extends Controller
                 'agreed' => true
             ]);
         }
+        else {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found',
+                'agreed' => false
+            ]);
+        }
     }
 
     public function canAccess(Request $request)
@@ -26,6 +33,13 @@ class GameController extends Controller
                 'success' => true,
                 'message' => '',
                 'can_access' => true
+            ]);
+        }
+        else {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found',
+                'can_access' => false
             ]);
         }
     }

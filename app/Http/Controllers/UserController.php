@@ -11,6 +11,7 @@ use App\Services\WestWalletService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\GenerateUserWallets;
+use App\Models\MonthlyStatistic;
 
 class UserController extends Controller
 {
@@ -274,6 +275,41 @@ class UserController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'Пользователь не найден.'
+        ]);
+    }
+
+    public function getMonthlyStatistics(Request $request)
+    {
+        $validatedData = $request->validate([
+            'coin' => 'required|string', // Валидация входящего параметра coin
+        ]);
+
+        $coin = $validatedData['coin'];
+
+        // Получаем статистику за последний месяц
+        $statistics = MonthlyStatistic::where('coin', $coin)
+            ->orderBy('date', 'desc')
+            ->take(30) // Берем последние 30 дней
+            ->get();
+
+        // Формируем ответ
+        $monthlyStatistics = $statistics->map(function ($stat) {
+            return [
+                'date' => $stat->date,
+                'value' => number_format($stat->value, 8, '.', ''),
+            ];
+        });
+
+        // Подсчитываем агрегированное значение
+        $aggregate = $statistics->sum('value');
+
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'data' => [
+                'monthly_statistics' => $monthlyStatistics,
+                'aggregate' => number_format($aggregate, 8, '.', ''),
+            ],
         ]);
     }
 }
