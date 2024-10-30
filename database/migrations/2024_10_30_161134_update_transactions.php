@@ -12,11 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->string('coin');
-            $table->string('faucet_name');
-            $table->decimal('amount_bitcoin', 8, 8);
-            $table->integer('referral_payment');
-            $table->integer('date');
+         
         });
     }
 
