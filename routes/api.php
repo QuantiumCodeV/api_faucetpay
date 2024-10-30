@@ -11,6 +11,7 @@ use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\MonthlyStatisticController;
 use App\Http\Controllers\DepositController;
 use App\Http\Controllers\LinkAdressesController;
+use App\Http\Controllers\WithdrawController;
 // Маршрут для регистрации аккаунта
 
 
@@ -47,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/wager-mining/get-information', [UserController::class, 'getWagerMiningInformation']);
     Route::post('/wallet/get-deposit-address', [UserController::class, 'getDepositAddress']);
+    Route::get('/wallet/ask-for-review', [WithdrawController::class, 'askForReview']);
 });
 
 
