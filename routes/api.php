@@ -49,6 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/wager-mining/get-information', [UserController::class, 'getWagerMiningInformation']);
     Route::post('/wallet/get-deposit-address', [UserController::class, 'getDepositAddress']);
     Route::get('/wallet/ask-for-review', [WithdrawController::class, 'askForReview']);
+    Route::get('/wallet/get-withdrawal-information', [WithdrawController::class, 'getWithdrawalInformation']);
 });
 
 
