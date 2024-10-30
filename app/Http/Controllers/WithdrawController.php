@@ -27,6 +27,10 @@ class WithdrawController extends Controller
         if ($request->type == 'PRIORITY') {
             $fee = $currency->min_withdraw * 0.0005;
         }
+        if($request->type == 'NORMAL'){
+            $fee = $currency->min_withdraw * 0.0001;
+        }
+
         if ($request->amount == 0) {
             $receive_amount = 0;
         } else {
