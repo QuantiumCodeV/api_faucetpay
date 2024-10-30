@@ -23,7 +23,7 @@ class CurrencyController extends Controller
                 'symbol' => $currency['tickers'][0],
                 'name' => $currency['name'],
                 'price' => (string)$price,
-                'image' => '', // Изображение отсутствует в ответе WestWallet
+                'image' => strtolower(json_decode($currency->tickers, true)[0]) . ".png", // Изображение отсутствует в ответе WestWallet
                 'normal_withdrawal_fee' => '0.00000000', // Комиссия отсутствует в ответе WestWallet
                 'priority_withdrawal_fee' => '0.00000000', // Приоритетная комиссия отсутствует в ответе WestWallet
                 'normal_minimum_withdrawal' => (string)$currency['min_withdraw'],
