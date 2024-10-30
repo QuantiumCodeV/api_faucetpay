@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/wallet/get-monthly-statistics', [MonthlyStatisticController::class, 'getMonthlyStatistics']);
     Route::post('/wallet/get-deposit-history', [DepositController::class, 'getDepositHistory']);
     Route::get('/wallet/get-linked-addresses', [LinkAdressesController::class, 'getLinkedAddresses']);
+    Route::post('/wallet/get-linked-addresses', [LinkAdressesController::class, 'getLinkedAddressesPost']);
     Route::post('/wallet/link-address', [LinkAdressesController::class, 'linkAddress']);
     Route::post('/wallet/remove-linked-address', [LinkAdressesController::class, 'removeLinkedAddress']);
 

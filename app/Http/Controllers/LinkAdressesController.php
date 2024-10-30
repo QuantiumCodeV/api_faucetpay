@@ -70,4 +70,26 @@ class LinkAdressesController extends Controller
             'message' => 'The address has been deleted.'
         ]);
     }
+
+    public function getLinkedAddressesPost(Request $request)
+    {
+        $request->validate([
+            'coin' => 'required|string'
+        ]);
+
+        $linkedAddresses = LinkAdresses::where('user_id', $request->user()->id)->where('coin', $request->coin)->get()->map(function ($address) {
+            return [
+                'id' => $address->id,
+                'coin' => $address->coin,
+                'address' => $address->address,
+                'label' => $address->label
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'addresses' => $linkedAddresses
+        ]);
+    }
 }
