@@ -8,6 +8,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\TransactionsController;
+use App\Http\Controllers\MonthlyStatisticController;
+use App\Http\Controllers\DepositController;
+use App\Http\Controllers\LinkAdressesController;
 // Маршрут для регистрации аккаунта
 
 
@@ -36,8 +39,17 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/rp/claim-daily-rp', [UserController::class, 'claimDailyRewardPoints']);
     Route::get('/wallet/get-information', [UserController::class, 'getInformation']);
     Route::post('/wallet/get-transactions', [TransactionsController::class, 'getAll']);
-    Route::get('/wallet/get-monthly-statistics', [UserController::class, 'getMonthlyStatistics']);
+    Route::post('/wallet/get-monthly-statistics', [MonthlyStatisticController::class, 'getMonthlyStatistics']);
+    Route::post('/wallet/get-deposit-history', [DepositController::class, 'getDepositHistory']);
+    Route::get('/wallet/get-linked-addresses', [LinkAdressesController::class, 'getLinkedAddresses']);
+    Route::post('/wallet/link-address', [LinkAdressesController::class, 'linkAddress']);
+    Route::post('/wallet/remove-linked-address', [LinkAdressesController::class, 'removeLinkedAddress']);
+
+    Route::get('/wager-mining/get-information', [UserController::class, 'getWagerMiningInformation']);
+    Route::post('/wallet/get-deposit-address', [UserController::class, 'getDepositAddress']);
 });
+
+
 
 Route::get('/games/can-access', [GameController::class, 'canAccess']);
 Route::get('/games/has-agreed', [GameController::class, 'hasAgreed']);

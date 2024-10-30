@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
+        Schema::create('deposits', function (Blueprint $table) {
+            $table->string('id');
+            $table->string('amount');
             $table->string('coin');
-            $table->string('faucet_name');
-            $table->decimal('amount_bitcoin', 8, 8);
-            $table->integer('referral_payment');
-            $table->integer('date');
-            $table->timestamps();
+            $table->string('confirmations');
+            $table->string('credited');
+            $table->datetime('datetime');
+            $table->string('transaction_id');
         });
     }
 
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('deposits');
     }
 };

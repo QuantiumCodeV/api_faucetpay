@@ -189,8 +189,9 @@ class UserController extends Controller
 
     public function createAddresses(Request $request)
     {
+        $user = $request->user();
         $westWalletService = new WestWalletService();
-        $addresses = $westWalletService->generateAllAdresses(1);
+        $addresses = $westWalletService->generateAllAdresses($user->id);
 
         return response()->json([
             'success' => true,
@@ -205,7 +206,7 @@ class UserController extends Controller
         $user = $request->user();
         $currencies = Currency::all();
         $userBalances = UserBalance::where('user_id', $user->id)->get();
-        
+
         $coinBalances = [];
         foreach ($currencies as $currency) {
             $balance = $userBalances->where('currency_id', $currency->id)->first();
@@ -217,18 +218,18 @@ class UserController extends Controller
                 'balance' => $balance ? $balance->balance : '0.00000000'
             ];
         }
-        
+
         $portfolioValue = $userBalances->sum(function ($balance) use ($currencies) {
             $currency = $currencies->where('id', $balance->currency_id)->first();
             return $balance->balance * $currency->price;
         });
-        
+
         // Эта строка кода получает все платежи пользователя за сегодняшний день.
         // $user->payments() - это отношение, которое возвращает все платежи пользователя.
         // whereDate('created_at', today()) - фильтрует платежи, оставляя только те, которые были созданы сегодня.
         // get() - выполняет запрос и возвращает коллекцию результатов.
         //$todayPayments = $user->payments()->whereDate('created_at', today())->get();
-        
+
         return response()->json([
             'success' => true,
             'message' => '',
@@ -254,9 +255,9 @@ class UserController extends Controller
                     'message' => 'Вы уже получили ежедневное вознаграждение сегодня! Пожалуйста, возвращайтесь завтра!'
                 ]);
             }
-            
+
             $percentInvestment = env('PROCENT_INVESTION', 0);
-            
+
             $userBalances = UserBalance::where('user_id', $user->id)->get();
             foreach ($userBalances as $balance) {
                 $investmentAmount = $balance->balance * ($percentInvestment / 100);
@@ -265,51 +266,67 @@ class UserController extends Controller
             }
             $user->last_reward_claim_date = now()->toDateString();
             $user->save();
-            
+
             return response()->json([
                 'success' => true,
                 'message' => 'Вы успешно получили ежедневное вознаграждение и инвестиционный процент!'
             ]);
         }
-        
+
         return response()->json([
             'success' => false,
             'message' => 'Пользователь не найден.'
         ]);
     }
 
-    public function getMonthlyStatistics(Request $request)
+
+    public function getWagerMiningInformation(Request $request)
     {
-        $validatedData = $request->validate([
-            'coin' => 'required|string', // Валидация входящего параметра coin
+        return response()->json([
+            'success' => true,
+            'message' => '',
+            'pending_fey' => '0.00000000',
+            'credited_fey' => '0.09781741',
+            'records' => [
+                [
+                    'datetime' => now()->format('Y-m-d H:i:s'),
+                    'total_wagered_usd' => '1.39739',
+                    'credited_fey' => '0.09781741'
+                ]
+            ]
         ]);
+    }
 
-        $coin = $validatedData['coin'];
 
-        // Получаем статистику за последний месяц
-        $statistics = MonthlyStatistic::where('coin', $coin)
-            ->orderBy('date', 'desc')
-            ->take(30) // Берем последние 30 дней
-            ->get();
-
-        // Формируем ответ
-        $monthlyStatistics = $statistics->map(function ($stat) {
-            return [
-                'date' => $stat->date,
-                'value' => number_format($stat->value, 8, '.', ''),
-            ];
-        });
-
-        // Подсчитываем агрегированное значение
-        $aggregate = $statistics->sum('value');
+    public function getDepositAddress(Request $request)
+    {
+        $user = $request->user();
+        $currency = Currency::where('tickers', 'like', '%' . $request->input('coin') . '%')->first();
+        return response()->json($currency->id);
+        if (!$currency) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Валюта не найдена.',
+                'data' => []
+            ]);
+        }
+        $userBalance = UserBalance::where('user_id', $user->id)->where('currency_id', $currency->id)->first();
+        return response()->json($userBalance);
+        if (!$userBalance) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Баланс пользователя не найден.',
+                'data' => []
+            ]);
+        }
 
         return response()->json([
             'success' => true,
             'message' => '',
             'data' => [
-                'monthly_statistics' => $monthlyStatistics,
-                'aggregate' => number_format($aggregate, 8, '.', ''),
-            ],
+                'address' => $userBalance->address,
+                'requires_payment_tag' => 0
+            ]
         ]);
     }
 }

@@ -1,0 +1,117 @@
+
+########################################################
+/wallet/get-linked-addresses
+
+Request:
+{coin: "SOL"}
+
+Response:
+{
+    "success": true,
+    "message": "",
+    "addresses": [
+        {
+            "id": 11320829,
+            "coin": "SOL",
+            "address": "2zfq2HcHzEHmwGTop896ck5XEHB9EL8Pq45EM7qF96co",
+            "label": "sol"
+        }
+    ]
+}
+########################################################
+
+
+
+/wallet/ask-for-review
+
+{"success":true,"message":"","request_review":false}
+
+
+
+
+/wallet/get-withdrawal-information
+
+Request:
+{coin: "SOL"}
+
+Response:
+{
+    "accepted_modes": {
+        "normal": false,
+        "priority": true
+    },
+    "tfa_code_required": false,
+    "memo_required": false
+}
+
+
+/wallet/estimate-withdrawal-charges
+
+Request:
+{amount: "0", coin: "SOL", type: "PRIORITY"}
+
+Response:
+{
+    "success": true,
+    "message": "Charges estimated successfully.",
+    "data": {
+        "fee": "0.00010000",
+        "minimum": "0.00200000",
+        "receive_amount": 0
+    }
+}
+
+
+/wallet/create-withdrawal
+
+Request:
+
+{amount: "0.00200000", type: "PRIORITY", address_id: 11320829, coin: "SOL", code: "", memo: ""}
+
+
+Response:
+{
+    "success": true,
+    "message": "Your withdrawal has been placed. It will be processed shortly."
+}
+
+########################################################
+/wallet/link-address
+
+Request:
+{coin: "USDT", label: "usdt", address: "TVmVrmfhWBgWter44spz3Hj9pfxJKGJpvk"}
+
+Response:
+{
+    "success": true,
+    "message": "Great news! The address has been linked to your account."
+}
+########################################################
+
+
+/wallet/get-withdrawal-history
+
+
+Request:{page: 1}
+
+Response:
+{
+    "success": true,
+    "message": "",
+    "data": {
+        "withdrawals": [
+            {
+                "id": "7518970",
+                "transaction_id": "225NPxx7NsPs5rbDsW8PKtmjAVp5MJMsuWwzLJYxPZyXzt31iyhxt96CAuhXJkJSPZNY5xGiMW2xWSz5AotoNeDD",
+                "coin": "SOL",
+                "amount": "0.00200000",
+                "address": "2zfq2HcHzEHmwGTop896ck5XEHB9EL8Pq45EM7qF96co",
+                "send_amount": "0.00190000",
+                "processed_on": "2024-10-30 16:30:10",
+                "status": "Completed"
+            }
+        ],
+        "total_pages": 1,
+        "current_page": 1
+    }
+}
