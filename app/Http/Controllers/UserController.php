@@ -311,7 +311,7 @@ class UserController extends Controller
             ]);
         }
         $userBalance = UserBalance::where('user_id', $user->id)->where('currency_id', $currency->id)->first();
-        return response()->json($userBalance);
+        
         if (!$userBalance) {
             return response()->json([
                 'success' => false,
