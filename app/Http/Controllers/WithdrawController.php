@@ -39,12 +39,6 @@ class WithdrawController extends Controller
         if ($receive_amount > $currency->max_withdraw_per_transaction) {
             return response()->json(['success' => false, 'message' => 'Amount is too high', 'data' => []]);
         }
-        if ($request->type == 'PRIORITY' && $currency->max_withdraw_transactions_per_day <= 0) {
-            return response()->json(['success' => false, 'message' => 'Priority withdrawals are not allowed', 'data' => []]);
-        }
-        if ($request->type == 'PRIORITY' && $currency->max_withdraw_transactions_per_day > 0 && $currency->max_withdraw_transactions_per_day <= $currency->max_withdraw_transactions_per_day) {
-            return response()->json(['success' => false, 'message' => 'Max withdrawals per day reached', 'data' => []]);
-        }
 
         return response()->json(['success' => true, 'message' => '', 'data' => ['fee' => $fee, 'minimum' => $currency->min_withdraw, 'receive_amount' => $receive_amount]]);
     }
