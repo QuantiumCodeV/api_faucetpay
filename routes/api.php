@@ -50,6 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/wallet/get-deposit-address', [UserController::class, 'getDepositAddress']);
     Route::get('/wallet/ask-for-review', [WithdrawController::class, 'askForReview']);
     Route::post('/wallet/get-withdrawal-information', [WithdrawController::class, 'getWithdrawalInformation']);
+    Route::post('/wallet/estimate-withdrawal-charges', [WithdrawController::class, 'estimateWithdrawalCharges']);
 });
 
 

@@ -28,7 +28,7 @@ Response:
 ########################################################
 
 
-
+########################################################
 /wallet/get-withdrawal-information
 
 Request:
@@ -43,7 +43,7 @@ Response:
     "tfa_code_required": false,
     "memo_required": false
 }
-
+########################################################
 
 /wallet/estimate-withdrawal-charges
 
