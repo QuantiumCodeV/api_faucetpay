@@ -34,7 +34,7 @@ class WithdrawController extends Controller
         }
 
         if ($receive_amount < $currency->min_withdraw) {
-            return response()->json(['success' => false, 'message' => 'Amount is too low', 'data' => []]);
+            $receive_amount = 0;
         }
         if ($receive_amount > $currency->max_withdraw_per_transaction) {
             return response()->json(['success' => false, 'message' => 'Amount is too high', 'data' => []]);
