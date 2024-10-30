@@ -46,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/wallet/get-linked-addresses', [LinkAdressesController::class, 'getLinkedAddressesPost']);
     Route::post('/wallet/link-address', [LinkAdressesController::class, 'linkAddress']);
     Route::post('/wallet/remove-linked-address', [LinkAdressesController::class, 'removeLinkedAddress']);
-
+    Route::post('/wallet/create-withdrawal', [WithdrawController::class, 'createWithdrawal']);
     Route::get('/wager-mining/get-information', [UserController::class, 'getWagerMiningInformation']);
     Route::post('/wallet/get-deposit-address', [UserController::class, 'getDepositAddress']);
     Route::get('/wallet/ask-for-review', [WithdrawController::class, 'askForReview']);

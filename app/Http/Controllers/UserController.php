@@ -61,7 +61,7 @@ class UserController extends Controller
             $coin_balances[] = [
                 'name' => $currency->name,
                 'coin' => $currency->tickers[0], // Предполагается, что первый тикер основной
-                'image' => "https://cdn.faucetpay.io/coins/" . strtolower($currency->tickers[0]) . ".png",
+                'image' => strtolower($currency->tickers[0]) . ".png",
                 'balance' => number_format($balance->balance, 8, '.', ''),
             ];
         }

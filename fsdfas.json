@@ -44,7 +44,7 @@ Response:
     "memo_required": false
 }
 ########################################################
-
+########################################################
 /wallet/estimate-withdrawal-charges
 
 Request:
@@ -60,7 +60,7 @@ Response:
         "receive_amount": 0
     }
 }
-
+########################################################
 
 /wallet/create-withdrawal
 

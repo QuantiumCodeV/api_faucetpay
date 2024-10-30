@@ -27,7 +27,7 @@ class WestWalletService
             return implode("|", $tx);
         } catch (InsufficientFundsException $e) {
             Log::error('Недостаточно средств для вывода: ' . $e->getMessage());
-            return "У вас недостаточно средств для этого вывода";
+            return "Insufficient funds";
         } catch (\Exception $e) {
             Log::error('Ошибка при создании вывода: ' . $e->getMessage());
             return null;
