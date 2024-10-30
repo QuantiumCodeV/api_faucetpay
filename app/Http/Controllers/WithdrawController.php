@@ -20,6 +20,7 @@ class WithdrawController extends Controller
     public function estimateWithdrawalCharges(Request $request)
     {
         $currency = Currency::where('tickers', 'like', '%' . $request->coin . '%')->first();
+        return response()->json($currency);
         if (!$currency) {
             return response()->json(['success' => false, 'message' => 'Currency not found', 'data' => []]);
         }
