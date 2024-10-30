@@ -302,7 +302,7 @@ class UserController extends Controller
     {
         $user = $request->user();
         $currency = Currency::where('tickers', 'like', '%' . $request->input('coin') . '%')->first();
-        return response()->json($currency->id);
+        
         if (!$currency) {
             return response()->json([
                 'success' => false,
