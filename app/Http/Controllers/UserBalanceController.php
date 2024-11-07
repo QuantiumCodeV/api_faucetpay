@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserBalance;
 use App\Services\WestWalletService;
 use App\Models\Deposit;
+use App\Models\Currency;
 use Illuminate\Support\Facades\Log;
 class UserBalanceController extends Controller
 {
@@ -39,8 +40,9 @@ class UserBalanceController extends Controller
         }
         
         // Находим или создаем баланс пользователя для данной валюты
+        $currency = Currency::where('name', $data['currency'])->first();
         $userBalance = UserBalance::firstOrCreate(
-            ['user_id' => $user->id, 'currency' => $data['currency']],
+            ['user_id' => $user->id, 'currency' => $currency->id],
             ['balance' => 0]
         );
         
