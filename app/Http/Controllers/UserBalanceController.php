@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserBalance;
 use App\Services\WestWalletService;
 use App\Models\Deposit;
+use Illuminate\Support\Facades\Log;
 class UserBalanceController extends Controller
 {
     public function ipn(Request $request)
@@ -16,6 +17,8 @@ class UserBalanceController extends Controller
             return response()->json(['error' => 'Недопустимый IP-адрес'], 403);
         }
 */
+
+        Log::info($request->all());
         $data = $request->input();
         $client = new WestWalletService();
         // Проверяем транзакцию
