@@ -214,7 +214,7 @@ class UserController extends Controller
                 'name' => $currency->name,
                 'coin' => json_decode($currency->tickers, true)[0],
                 'image' => strtolower(json_decode($currency->tickers, true)[0]) . ".png",
-                'price' => $currency->price,
+                'price' => "2.00000000",
                 'balance' => $balance ? $balance->balance : '0.00000000'
             ];
         }
