@@ -16,8 +16,6 @@ class MonthlyStatisticController extends Controller
         ]);
 
 
-        $user = $request->user();
-
         // Создаем новую запись в таблице monthly_statistics
         MonthlyStatistic::create([
             'user_id' => $user->id, // Сохраняем user_id
