@@ -19,11 +19,16 @@ class UserBalanceController extends Controller
 */
 
         
-        $data = $request->input();
+        $data = $request->all();
         $client = new WestWalletService();
         // Проверяем транзакцию
         if (!$client->checkTransaction($data['id'])) {
             return response()->json(['error' => 'Недействительная транзакция'], 400);
+        }
+
+        // Проверяем статус транзакции
+        if ($data['status'] !== 'completed') {
+            return response()->json(['error' => 'Транзакция не завершена'], 400);
         }
         
         // Получаем пользователя по label (id пользователя)
@@ -43,6 +48,8 @@ class UserBalanceController extends Controller
         $userBalance->balance += $data['amount'];
         $userBalance->save();
 
+        // Логируем данные депозита
+        Log::info('Deposit received', $data);
 
         $requestStatistic = new Request();
         $requestStatistic->merge([
@@ -62,7 +69,6 @@ class UserBalanceController extends Controller
         $deposit->datetime = date('Y-m-d H:i:s');
         $deposit->transaction_id = $data['blockchain_hash'];
         $deposit->save();
-        
         
         return response()->json(['success' => 'Баланс успешно обновлен'], 200);
     }
