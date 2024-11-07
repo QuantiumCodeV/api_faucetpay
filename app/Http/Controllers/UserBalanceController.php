@@ -18,7 +18,7 @@ class UserBalanceController extends Controller
         }
 */
 
-        return $request;
+        
         $data = $request->input();
         $client = new WestWalletService();
         // Проверяем транзакцию
