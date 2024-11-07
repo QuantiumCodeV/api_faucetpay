@@ -60,8 +60,8 @@ class UserController extends Controller
 
             $coin_balances[] = [
                 'name' => $currency->name,
-                'coin' => $currency->tickers[0], // Предполагается, что первый тикер основной
-                'image' => strtolower($currency->tickers[0]) . ".png",
+                'coin' => json_decode($currency->tickers)[0], // Предполагается, что первый тикер основной
+                'image' => strtolower(json_decode($currency->tickers, true)[0]) . ".png",
                 'balance' => number_format($balance->balance, 8, '.', ''),
             ];
         }
