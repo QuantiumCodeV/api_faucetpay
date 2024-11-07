@@ -60,7 +60,7 @@ class UserBalanceController extends Controller
             'value' => $data['amount']
         ]);
         $monthlyStatisticController = new MonthlyStatisticController();
-        $monthlyStatisticController->addMonthlyStatistics($requestStatistic);
+        $monthlyStatisticController->addMonthlyStatistics($requestStatistic, $user);
 
         $deposit = new Deposit();
         $deposit->user_id = $data['label'];

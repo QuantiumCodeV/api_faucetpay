@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\MonthlyStatistic;
-
+use App\Models\User;
 class MonthlyStatisticController extends Controller
 {
-    public function addMonthlyStatistics(Request $request)
+    public function addMonthlyStatistics(Request $request, User $user)
     {
         $validatedData = $request->validate([
             'coin' => 'required|string',
