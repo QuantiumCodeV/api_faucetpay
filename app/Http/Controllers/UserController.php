@@ -212,7 +212,7 @@ class UserController extends Controller
             $balance = $userBalances->where('currency_id', $currency->id)->first();
             $coinBalances[] = [
                 'name' => $currency->name,
-                'coin' => json_decode($currency->tickers, true)[0],
+                'coin' => json_decode($currency->tickers)[$currency->id],
                 'image' => strtolower(json_decode($currency->tickers, true)[0]) . ".png",
                 'price' => "2.00000000",
                 'balance' => $balance ? $balance->balance : '0.00000000'
