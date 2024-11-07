@@ -11,7 +11,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // Запланируйте выполнение задания DailyInterestJob раз в минуту для тестирования
-        $schedule->command('tinker')->everySecond();
+        $schedule->command('tinker')->everyMinute();
     }
 
     protected function commands()
