@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\DailyInterestJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -9,8 +10,8 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        // Запланируйте выполнение задания DailyInterestJob раз в день
-        $schedule->job(new \App\Jobs\DailyInterestJob)->everyMinute();
+        // Запланируйте выполнение задания DailyInterestJob раз в минуту для тестирования
+        $schedule->job(new DailyInterestJob)->everyMinute();
     }
 
     protected function commands()
