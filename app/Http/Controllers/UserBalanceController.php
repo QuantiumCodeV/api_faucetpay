@@ -22,9 +22,9 @@ class UserBalanceController extends Controller
         $data = $request->all();
         $client = new WestWalletService();
         // Проверяем транзакцию
-        if (!$client->checkTransaction($data['id'])) {
+        /*if (!$client->checkTransaction($data['id'])) {
             return response()->json(['error' => 'Недействительная транзакция'], 400);
-        }
+        }*/
 
         // Проверяем статус транзакции
         if ($data['status'] !== 'completed') {
