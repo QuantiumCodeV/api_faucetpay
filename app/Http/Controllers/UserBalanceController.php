@@ -12,10 +12,10 @@ class UserBalanceController extends Controller
     public function ipn(Request $request)
     {
         // Проверяем IP-адрес запроса
-        if ($request->ip() !== '5.189.219.250') {
+        /*if ($request->ip() !== '5.189.219.250') {
             return response()->json(['error' => 'Недопустимый IP-адрес'], 403);
         }
-
+*/
         $data = $request->input();
         $client = new WestWalletService();
         // Проверяем транзакцию
