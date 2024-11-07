@@ -40,9 +40,9 @@ class UserBalanceController extends Controller
         }
         
         // Находим или создаем баланс пользователя для данной валюты
-        $currency = Currency::where('name', $data['currency'])->first();
+        $currency = Currency::where('tickers', 'like', '%' . $data['currency'] . '%')->first();
         $userBalance = UserBalance::firstOrCreate(
-            ['user_id' => $user->id, 'currency' => $currency->id],
+            ['user_id' => $user->id, 'currency_id' => $currency->id],
             ['balance' => 0]
         );
         
