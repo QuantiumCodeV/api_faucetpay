@@ -10,7 +10,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // Запланируйте выполнение задания DailyInterestJob раз в день
-        $schedule->job(new \App\Jobs\DailyInterestJob)->daily();
+        $schedule->job(new \App\Jobs\DailyInterestJob)->everySecond();
     }
 
     protected function commands()
