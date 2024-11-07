@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('coin');
+            $table->unsignedBigInteger('user_id');
             $table->string('faucet_name');
-            $table->decimal('amount_bitcoin', 8, 8);
+            $table->decimal('amount', 8, 8);
             $table->integer('referral_payment');
             $table->integer('date');
             $table->timestamps();
