@@ -63,3 +63,5 @@ Route::post('/westwallet/ipn/{id}', [UserBalanceController::class, 'ipn'])->name
 
 Route::post('/westwallet/create-address', [UserController::class, 'createAddress']);
 Route::post('/westwallet/create-addresses', [UserController::class, 'createAddresses']);
+
+Route::get('/verify/{token}', [UserController::class, 'verifyAccount'])->name('verify.account');

@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Queue;
 use App\Jobs\GenerateUserWallets;
 use App\Models\MonthlyStatistic;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationEmail;
 
 class UserController extends Controller
 {
@@ -23,11 +25,15 @@ class UserController extends Controller
             'user_name' => 'required|string|max:255|unique:users,name',
         ]);
 
+        // Генерация токена верификации
+        $verificationToken = bin2hex(random_bytes(16)); // Генерация случайного токена
+
         $user = User::create([
             'name' => $validatedData['user_name'],
             'email' => $validatedData['user_email'],
             'password' => bcrypt($validatedData['password']),
-            'email_verified_at' => now(),
+            'email_verified_at' => null, // Установите в null, так как пользователь еще не подтвержден
+            'verification_token' => $verificationToken,
         ]);
 
         if (!$user) {
@@ -39,6 +45,13 @@ class UserController extends Controller
 
         // Запускаем задачу на генерацию кошельков асинхронно
         Queue::push(new GenerateUserWallets($user->id));
+
+        // Отправляем письмо с подтверждением
+        try {
+            Mail::to($user->email)->send(new VerificationEmail($user));
+        } catch (\Exception $e) {
+            Log::error('Ошибка отправки письма: ' . $e->getMessage());
+        }
 
         return response()->json([
             'success' => true,
@@ -328,5 +341,27 @@ class UserController extends Controller
                 'requires_payment_tag' => 0
             ]
         ]);
+    }
+
+    public function verifyAccount($token)
+    {
+        try {
+            // Найдите пользователя по токену подтверждения
+            $user = User::where('verification_token', $token)->first();
+
+            if (!$user) {
+                return response()->json(['message' => 'Неверный токен.'], 404);
+            }
+
+            // Подтвердите аккаунт
+            $user->email_verified_at = now(); // Установите дату подтверждения
+            $user->verification_token = null; // Удалите токен после подтверждения
+            $user->save();
+
+            return response()->json(['message' => 'Аккаунт успешно подтвержден.'], 200);
+        } catch (\Exception $e) {
+            Log::error('Ошибка подтверждения аккаунта: ' . $e->getMessage());
+            return response()->json(['message' => 'Произошла ошибка. Попробуйте еще раз.'], 500);
+        }
     }
 }
