@@ -29,6 +29,11 @@ class AuthController extends Controller
                 'message' => 'Неверные учетные данные'
             ], 401);
         }
+        if($user->email_verified_at == null){
+            return response()->json([
+                'message' => 'Аккаунт не подтвержден'
+            ], 401);
+        }
         $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
 
         return response()->json([
