@@ -19,16 +19,15 @@ class UserBalanceController extends Controller
         }
 */
 
-        
-        // Получаем данные из GET-запроса
+        // Получаем данные из POST-запроса, так как используется application/x-www-form-urlencoded
         $data = [
-            'id' => $request->query('id'),
-            'status' => $request->query('status'),
-            'label' => $request->query('label'), 
-            'currency' => $request->query('currency'),
-            'amount' => $request->query('amount'),
-            'blockchain_confirmations' => $request->query('blockchain_confirmations'),
-            'blockchain_hash' => $request->query('blockchain_hash')
+            'id' => $request->input('id'),
+            'status' => $request->input('status'), 
+            'label' => $request->input('label'),
+            'currency' => $request->input('currency'),
+            'amount' => $request->input('amount'),
+            'blockchain_confirmations' => $request->input('blockchain_confirmations'),
+            'blockchain_hash' => $request->input('blockchain_hash')
         ];
 
         // Проверяем наличие всех необходимых параметров
