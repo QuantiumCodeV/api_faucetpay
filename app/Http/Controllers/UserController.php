@@ -315,7 +315,7 @@ class UserController extends Controller
     {
         $user = $request->user();
         $currency = Currency::where('tickers', 'like', '%' . $request->input('coin') . '%')->first();
-        
+
         if (!$currency) {
             return response()->json([
                 'success' => false,
@@ -324,7 +324,7 @@ class UserController extends Controller
             ]);
         }
         $userBalance = UserBalance::where('user_id', $user->id)->where('currency_id', $currency->id)->first();
-        
+
         if (!$userBalance) {
             return response()->json([
                 'success' => false,
@@ -362,6 +362,33 @@ class UserController extends Controller
         } catch (\Exception $e) {
             Log::error('Ошибка подтверждения аккаунта: ' . $e->getMessage());
             return response()->json(['message' => 'Произошла ошибка. Попробуйте еще раз.'], 500);
+        }
+    }
+
+    public function confirmAccount(Request $request)
+    {
+        try {
+            $token = $request->post('activation_hash');
+            $user = User::where('verification_token', $token)->first();
+
+            if (!$user) {
+                return response()->json(['success' => false, 'message' => 'Invalid token.'], 404);
+            }
+
+            // Confirm account
+            $user->email_verified_at = now(); // Set confirmation date
+            $user->verification_token = null; // Remove token after confirmation
+            $user->save();
+            return response()->json([
+                'success' => true,
+                'message' => 'Your account has been activated.',
+                'data' => [
+                    'hash' => $token
+                ]
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Account confirmation error: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'An error occurred. Please try again.'], 500);
         }
     }
 }

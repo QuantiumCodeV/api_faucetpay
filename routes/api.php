@@ -55,6 +55,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 
+Route::post('/account/confirm-account', [UserController::class, 'confirmAccount']);
 
 Route::get('/games/can-access', [GameController::class, 'canAccess']);
 Route::get('/games/has-agreed', [GameController::class, 'hasAgreed']);
