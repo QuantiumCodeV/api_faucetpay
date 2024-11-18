@@ -88,7 +88,8 @@ class UserBalanceController extends Controller
         $deposit->datetime = date('Y-m-d H:i:s');
         $deposit->transaction_id = $data['blockchain_hash'];
         $deposit->save();*/
-        
+        $data = $request->all();
+        Log::info('Deposit received', $data);
         return response()->json(['success' => 'Баланс успешно обновлен'], 200);
     }
 }
