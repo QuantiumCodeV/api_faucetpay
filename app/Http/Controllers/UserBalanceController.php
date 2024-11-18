@@ -14,10 +14,10 @@ class UserBalanceController extends Controller
     public function ipn(Request $request)
     {
         // Проверяем IP-адрес запроса
-        if ($request->ip() !== '5.189.219.250') {
+    /*if ($request->ip() !== '5.189.219.250') {
             return response()->json(['error' => 'Недопустимый IP-адрес'], 403);
         }
-
+*/
         // Получаем данные из POST-запроса
         $data = [
             'id' => $request->input('id'),
