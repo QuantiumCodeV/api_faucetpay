@@ -20,7 +20,25 @@ class UserBalanceController extends Controller
 */
 
         
-        $data = $request->all();
+        // Получаем данные из GET-запроса
+        $data = [
+            'id' => $request->query('id'),
+            'status' => $request->query('status'),
+            'label' => $request->query('label'), 
+            'currency' => $request->query('currency'),
+            'amount' => $request->query('amount'),
+            'blockchain_confirmations' => $request->query('blockchain_confirmations'),
+            'blockchain_hash' => $request->query('blockchain_hash')
+        ];
+
+        // Проверяем наличие всех необходимых параметров
+        $requiredParams = ['id', 'status', 'label', 'currency', 'amount', 'blockchain_confirmations', 'blockchain_hash'];
+        foreach ($requiredParams as $param) {
+            if (!isset($data[$param])) {
+                return response()->json(['error' => "Отсутствует обязательный параметр: {$param}"], 400);
+            }
+        }
+
         $client = new WestWalletService();
         // Проверяем транзакцию
         /*if (!$client->checkTransaction($data['id'])) {

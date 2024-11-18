@@ -59,7 +59,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/games/can-access', [GameController::class, 'canAccess']);
 Route::get('/games/has-agreed', [GameController::class, 'hasAgreed']);
 
-Route::get('/westwallet/ipn', [UserBalanceController::class, 'ipn'])->name('westwallet.ipn');
+Route::post('/westwallet/ipn', [UserBalanceController::class, 'ipn'])->name('westwallet.ipn');
 
 Route::post('/westwallet/create-address', [UserController::class, 'createAddress']);
 Route::post('/westwallet/create-addresses', [UserController::class, 'createAddresses']);
