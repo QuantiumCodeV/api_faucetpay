@@ -14,24 +14,26 @@ class UserBalanceController extends Controller
     public function ipn(Request $request)
     {
         // Проверяем IP-адрес запроса
-        /*if ($request->ip() !== '5.189.219.250') {
+        if ($request->ip() !== '5.189.219.250') {
             return response()->json(['error' => 'Недопустимый IP-адрес'], 403);
         }
-*/
-/*
-        // Получаем данные из POST-запроса, так как используется application/x-www-form-urlencoded
+
+        // Получаем данные из POST-запроса
         $data = [
             'id' => $request->input('id'),
-            'status' => $request->input('status'), 
-            'label' => $request->input('label'),
-            'currency' => $request->input('currency'),
             'amount' => $request->input('amount'),
+            'address' => $request->input('address'),
+            'dest_tag' => $request->input('dest_tag'),
+            'label' => $request->input('label'), 
+            'currency' => $request->input('currency'),
+            'status' => $request->input('status'),
             'blockchain_confirmations' => $request->input('blockchain_confirmations'),
-            'blockchain_hash' => $request->input('blockchain_hash')
+            'blockchain_hash' => $request->input('blockchain_hash'),
+            'fee' => $request->input('fee')
         ];
 
         // Проверяем наличие всех необходимых параметров
-        $requiredParams = ['id', 'status', 'label', 'currency', 'amount', 'blockchain_confirmations', 'blockchain_hash'];
+        $requiredParams = ['id', 'amount', 'label', 'currency', 'status', 'blockchain_confirmations', 'blockchain_hash'];
         foreach ($requiredParams as $param) {
             if (!isset($data[$param])) {
                 return response()->json(['error' => "Отсутствует обязательный параметр: {$param}"], 400);
@@ -43,7 +45,7 @@ class UserBalanceController extends Controller
         /*if (!$client->checkTransaction($data['id'])) {
             return response()->json(['error' => 'Недействительная транзакция'], 400);
         }*/
-/*
+
         // Проверяем статус транзакции
         if ($data['status'] !== 'completed') {
             return response()->json(['error' => 'Транзакция не завершена'], 400);
@@ -87,9 +89,7 @@ class UserBalanceController extends Controller
         $deposit->credited = 'credited';
         $deposit->datetime = date('Y-m-d H:i:s');
         $deposit->transaction_id = $data['blockchain_hash'];
-        $deposit->save();*/
-        $data = $request->all();
-        Log::info('Deposit received', $data);
+        $deposit->save();
         return response()->json(['success' => 'Баланс успешно обновлен'], 200);
     }
 }
