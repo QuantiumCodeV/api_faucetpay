@@ -6,7 +6,7 @@
 <body>
     <h1>Здравствуйте, {{ $user->name }}!</h1>
     <p>Пожалуйста, подтвердите вашу электронную почту, перейдя по следующей ссылке:</p>
-    <a href="{{ url('api/verify/' . $user->verification_token) }}">Подтвердить электронную почту</a>
+    <a href="{{ env('FRONT_URL') . '/account/confirm-email/' . $user->verification_token }}">Подтвердить электронную почту</a>
     <p>Спасибо!</p>
 </body>
 </html>

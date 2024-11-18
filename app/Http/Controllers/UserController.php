@@ -343,27 +343,6 @@ class UserController extends Controller
         ]);
     }
 
-    public function verifyAccount($token)
-    {
-        try {
-            // Найдите пользователя по токену подтверждения
-            $user = User::where('verification_token', $token)->first();
-
-            if (!$user) {
-                return response()->json(['message' => 'Неверный токен.'], 404);
-            }
-
-            // Подтвердите аккаунт
-            $user->email_verified_at = now(); // Установите дату подтверждения
-            $user->verification_token = null; // Удалите токен после подтверждения
-            $user->save();
-
-            return response()->json(['message' => 'Аккаунт успешно подтвержден.'], 200);
-        } catch (\Exception $e) {
-            Log::error('Ошибка подтверждения аккаунта: ' . $e->getMessage());
-            return response()->json(['message' => 'Произошла ошибка. Попробуйте еще раз.'], 500);
-        }
-    }
 
     public function confirmAccount(Request $request)
     {
