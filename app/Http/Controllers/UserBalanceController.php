@@ -18,7 +18,7 @@ class UserBalanceController extends Controller
             return response()->json(['error' => 'Недопустимый IP-адрес'], 403);
         }
 */
-
+/*
         // Получаем данные из POST-запроса, так как используется application/x-www-form-urlencoded
         $data = [
             'id' => $request->input('id'),
@@ -43,7 +43,7 @@ class UserBalanceController extends Controller
         /*if (!$client->checkTransaction($data['id'])) {
             return response()->json(['error' => 'Недействительная транзакция'], 400);
         }*/
-
+/*
         // Проверяем статус транзакции
         if ($data['status'] !== 'completed') {
             return response()->json(['error' => 'Транзакция не завершена'], 400);
@@ -87,7 +87,7 @@ class UserBalanceController extends Controller
         $deposit->credited = 'credited';
         $deposit->datetime = date('Y-m-d H:i:s');
         $deposit->transaction_id = $data['blockchain_hash'];
-        $deposit->save();
+        $deposit->save();*/
         
         return response()->json(['success' => 'Баланс успешно обновлен'], 200);
     }
